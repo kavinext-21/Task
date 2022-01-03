@@ -1,0 +1,17 @@
+#display the files present in that directory
+Get-ChildItem C:\Users\Administrator.DEMO\Desktop -File | select name, *time    
+
+#created function to display the matched files
+Function Check-File 
+{     
+   Get-ChildItem C:\Users\Administrator.DEMO\Desktop -File | where{$_.LastAccessTime.Year -eq '2020'} 
+}      
+#used try-catch to move the file to recyclebin
+Try
+{      
+   Check-File | Move-Item -Destination 'C:\$Recycle.Bin'   
+}
+catch 
+{   
+   Write-Host "Command Not Found"
+}   

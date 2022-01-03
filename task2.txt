@@ -1,0 +1,22 @@
+#displays the file that present in the system
+Get-ChildItem C:\Users\Administrator.DEMO\Desktop -File | select name, *time  
+
+#created function to process task Function 
+Get-NeglectedFiles
+{       
+   Param([string[]]$path,              
+        [int]$numberYear)       
+   $cutOffDate = (Get-Date).AddYear(-$numberYear)       
+   Get-ChildItem -Path $path |       
+   Where-Object {$_.LastAccessTime -le $cutOffDate}  
+}  
+
+#used try-catch to run the command and to move the unused file to recycle bin
+try
+{    
+   Get-NeglectedFiles -path C:\Users\Administrator.DEMO\Desktop -numberYear 1 | Move-Item -Destination 'C:\$Recycle.Bin'  
+}
+catch 
+{  
+  Write-Host "file already moved "
+}     ‌‌ 

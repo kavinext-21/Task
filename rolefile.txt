@@ -1,0 +1,6 @@
+---
+- hosts: web
+  name: run a command to display the files and path
+  tasks:
+  - include_role:
+      name: demo

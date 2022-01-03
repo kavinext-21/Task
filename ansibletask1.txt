@@ -1,0 +1,15 @@
+---
+# tasks file for demo
+- name: ls
+  shell: ls
+  register: output
+- debug:
+    msg: "{{ output.stdout_lines }}"
+- local_action: copy content="{{ output.stdout_lines }}" dest="/etc/ansible/test.txt"
+
+- name: pwd
+  shell: pwd
+  register: output
+- debug:
+    msg: "{{ output.stdout_lines }}"
+- local_action: copy content="{{ output.stdout_lines }}" dest="/etc/ansible/test.txt"

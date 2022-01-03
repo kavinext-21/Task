@@ -1,0 +1,36 @@
+Write-Verbose "Setting Arguments" -Verbose
+$StartDTM = (Get-Date)  $Vendor = "Microsoft"
+$Product = "Visual Studio Code"
+$Version = "1.63.2"
+$PackageName = "VSCodeUserSetup-x64-1.63.2"  
+$InstallerType = "exe"$Source = "$PackageName" + "." + "$InstallerType"
+$LogPS = "${env:SystemRoot}" + "\Temp\$Vendor $Product $Version PS Wrapper.log"
+$LogApp = "${env:SystemRoot}" + "\Temp\$PackageName.log"
+$Destination = "${env:ChocoRepository}" + "\$Vendor\$Product\$Version\$packageName.$installerType"
+$UnattendedArgs = '/verysilent /suppressmsgboxes /mergetasks=!runcode'
+$url = "https://code.visualstudio.com/docs/?dv=win"
+$ProgressPreference = 'SilentlyContinue'Start-Transcript $LogPS  
+if( -Not (Test-Path -Path $Version ) )
+{    
+New-Item -ItemType directory -Path $Version
+}  
+CD $Version  
+Write-Verbose "Downloading" -Verbose
+If (!(Test-Path -Path $Source)) 
+{    
+Invoke-WebRequest -uri https://code.visualstudio.com/docs/?dv=win            
+}        
+Else 
+{            
+Write-Verbose "File exists. Skipping Download." -Verbose         
+}  
+Write-Verbose "Starting Installation" -Verbose 
+Start-Process -Filepath 'C:\Users\Administrator.DEMO\Downloads\VSCodeUserSetup-x64-1.63.2.exe' 
+Write-Verbose "Customization" -Verbose
+CD 'C:\Users\Administrator.Demo\Downloads'
+Code -install -extension ms-vscode.powershell -force  
+Write-Verbose "Stop logging" -Verbose
+$EndDTM = (Get-Date)
+#Write-Verbose "Elapsed Time: $(($EndDTM-$StartDTM).TotalSeconds) Seconds" -Verbose
+#Write-Verbose "Elapsed Time: $(($EndDTM-$StartDTM).TotalMinutes) Minutes" -Verbose
+Stop-Transcript  
